@@ -106,15 +106,16 @@ class Movies extends Component {
       searchQuery
     } = this.state;
     if (length === 0) return <p>There are no movie in the database.</p>;
+    const { totalCount, data: movies } = this.getPagedData();
 
     const filtered =
       selectedGenre && selectedGenre._id
         ? allMovies.filter(m => m.genre._id === selectedGenre._id)
         : allMovies;
 
-    _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+    //_.orderBy(filtered, [sortCo2lumn.path], [sortColumn.order]);
 
-    const movies = paginate(filtered, currentPage, pageSize);
+    //const movies = paginate(filtered, currentPage, pageSize);
 
     return (
       <React.Fragment>
@@ -128,6 +129,7 @@ class Movies extends Component {
           </div>
           <div className="col-9">
             <p>Showing {filtered.length} movies in the database.</p>
+            <p>Showing {totalCount} movies in the database.</p>
             <SearchBox value={searchQuery} onChange={this.handleSearch} />
             <MoviesTable
               movies={movies}
@@ -139,7 +141,7 @@ class Movies extends Component {
         </div>
 
         <Pagination
-          itemsCount={filtered.length}
+          itemsCount={totalCount}
           pageSize={pageSize}
           currentPage={currentPage}
           onPageChange={this.handlePageChange}
