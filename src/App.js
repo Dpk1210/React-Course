@@ -14,7 +14,8 @@ import LoginForm from './components/loginForm';
 import RegisterForm from './components/registerForm';
 import Logout from "./components/logout";
 import auth from "../src/services/authService";
-import "react-toastify/dist/ReactToastify.css"
+import "react-toastify/dist/ReactToastify.css";
+import MovieForm from "./components/movieForm";
 import './App.css';
 
 class App extends Component {
@@ -48,6 +49,7 @@ class App extends Component {
             <Route path="/movies" render={props => <Movies {...props} user={this.state.user} />} />
             <Route path="/customers" component={Customers}></Route>
             <Route path="/rentals" component={Rentals}></Route>
+            <Route path="/new-movie" component={MovieForm}></Route>
             <Route path="/login-form" component={LoginForm}></Route>
             <Route path="/logout" component={Logout}></Route>
             <Route path="/register-form" component={RegisterForm}></Route>

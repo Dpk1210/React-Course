@@ -8,6 +8,8 @@ import { getGenres } from "../services/genreService";
 import { paginate } from "../utils/paginate";
 import _ from "lodash";
 import SearchBox from "./searchBox";
+import { Link } from "react-router-dom";
+
 //const { user } = this.props;
 
 class Movies extends Component {
@@ -20,7 +22,6 @@ class Movies extends Component {
     selectedGenre: null,
     sortColumn: { path: "title", order: "asc" }
   };
-
   async componentDidMount() {
     const { data } = await getGenres();
     const genres = [{ name: "All Genres", _id: "" }, ...data];
@@ -97,6 +98,7 @@ class Movies extends Component {
   render() {
     //console.log(this.state.movies);
     const { length } = this.state.movies;
+    const { user } = this.props;
     const {
       pageSize,
       currentPage,
@@ -128,9 +130,20 @@ class Movies extends Component {
             />
           </div>
           <div className="col-9">
+            {user && (
+              <Link
+                to="/new-movie"
+                className="btn btn-primary"
+                style={{ marginBottom: 20 }}
+              >
+                New Movie
+              </Link>
+            )}
+
             <p>Showing {filtered.length} movies in the database.</p>
-            <p>Showing {totalCount} movies in the database.</p>
-            <SearchBox value={searchQuery} onChange={this.handleSearch} />
+            {user && (
+              <SearchBox value={searchQuery} onChange={this.handleSearch} />
+            )}
             <MoviesTable
               movies={movies}
               onLike={this.handleLike}
