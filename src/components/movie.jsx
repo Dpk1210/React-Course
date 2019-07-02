@@ -9,6 +9,8 @@ import { paginate } from "../utils/paginate";
 import _ from "lodash";
 import SearchBox from "./searchBox";
 import { Link } from "react-router-dom";
+import loader from "../ajax-loader.gif";
+import Button from "@material-ui/core/Button";
 
 //const { user } = this.props;
 
@@ -61,9 +63,9 @@ class Movies extends Component {
     this.setState({ searchQuery: query, selectedGenre: null, currentPage: 1 });
   };
 
-  handleSort = path => {
+  handleSort = sortColumn => {
     //console.log("handle select");
-    this.setState({ sortColumn: { path, order: "asc" } });
+    this.setState({ sortColumn });
   };
 
   handlePageChange = page => {
@@ -107,7 +109,7 @@ class Movies extends Component {
       movies: allMovies,
       searchQuery
     } = this.state;
-    if (length === 0) return <p>There are no movie in the database.</p>;
+    if (length === 0) return <img src={loader} className="mx-auto d-block" />;
     const { totalCount, data: movies } = this.getPagedData();
 
     const filtered =
@@ -131,21 +133,18 @@ class Movies extends Component {
           </div>
           <div className="col-9">
             {user && (
-              <Link
-                to="/new-movie"
-                className="btn btn-primary"
-                style={{ marginBottom: 20 }}
-              >
-                New Movie
+              <Link to="/new-movie" style={{ marginBottom: 20 }}>
+                <Button variant="contained">New Movie</Button>
               </Link>
             )}
-
             <p>Showing {filtered.length} movies in the database.</p>
             {user && (
               <SearchBox value={searchQuery} onChange={this.handleSearch} />
             )}
+            {length === 0 && <img src={loader} alt="" />}
             <MoviesTable
               movies={movies}
+              sortColumn={sortColumn}
               onLike={this.handleLike}
               onDelete={this.handleDelete}
               onSort={this.handleSort}
